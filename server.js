@@ -1,16 +1,43 @@
 const inquirer = require('inquirer');
 const PORT = 3001;
-const express = require('express');
-const app = express();
-const db = require('../db/connection')
+const mysql = require('mysql2');
 
 
+// //Create connection to our mysql database
+// const connection = mysql.createConnection({
+//   host: 'localhost',
+//   user: 'root',
+//   password: '',
+//   database: 'employeeTracker_db',
+// });
 
-// Middleware
-app.use(express.static());
-app.use(express.json());
-app.use(express.urlencoded());
+// connection.connect((err) => {
+//   if (err) throw err;
+//   console.log("Connected to the database!");
+//   start();
+// });
 
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
-});
+// Initial questions when app is started
+function initQuestions () {
+  inquirer.prompt({
+    type: 'list',
+    name: 'selected_option',
+    message: 'What would you like to do?',
+    choices: [
+      'View all departments',
+      'View all roles',
+      'View all employees',
+      'Add a department',
+      'Add a role',
+      'Add an employee',
+      'Update an employee role',
+    ],
+  })
+  .then((answers) => {
+    switch (answers.selected_option) {
+
+    }
+  })
+}
+
+initQuestions();
