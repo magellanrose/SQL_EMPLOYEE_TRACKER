@@ -1,4 +1,4 @@
-USE employeeTracker_db
+USE employeeTracker_db;
 
 INSERT INTO departments (department_name) 
 VALUES
@@ -15,7 +15,7 @@ VALUES
 ('Front Desk', 20000.00, 3),
 ('Manager', 29000.00, 4),
 ('Head Cleaner', 25000.00, 5),
-('Floors', 10000.00, 6)
+('Floors', 10000.00, 6);
 
 
 
@@ -26,4 +26,4 @@ VALUES
 ('Eric', 'Cartman', 3, 3),
 ('Randy', 'Darsh', 4, 4),
 ('Bobs', 'Burgers', 5, 5),
-('George', 'Washington', 6, 6),
+('George', 'Washington', 6, 6);
