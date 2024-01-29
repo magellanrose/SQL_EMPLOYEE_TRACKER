@@ -49,7 +49,7 @@ function initQuestions () {
                 addEmployee();
                 break;
             case 'Update an employee role':
-                updateEmployeeRole();
+                updateEmployee();
                 break;
             case 'Quit':
                 connection.end();
@@ -58,3 +58,18 @@ function initQuestions () {
   })
 }
 function viewDepartments() {}
+
+function viewRoles() {}
+
+function viewEmployees() {}
+
+function addDepartment() {}
+
+function addRole() {}
+
+function addEmployee() {}
+
+function updateEmployee() {}
+
+
+
