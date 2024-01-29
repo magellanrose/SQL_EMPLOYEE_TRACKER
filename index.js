@@ -8,9 +8,15 @@ const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password: '',
-  database: 'employeeTracker_db',
+  database: 'employee_tracker',
 });
 
+connection.connect((err) => {
+  if (err) throw err;
+
+  console.log('Connected to database');
+
+});
 
 // Initial questions when app is started
 function initQuestions () {
@@ -57,11 +63,20 @@ function initQuestions () {
     }
   })
 }
-function viewDepartments() {}
 
-function viewRoles() {}
+initQuestions();
 
-function viewEmployees() {}
+function viewDepartments() {
+  const departmentRequest = "SELECT * FROM department";
+}
+
+function viewRoles() {
+    const rolesRequest = "SELECT * FROM roles";
+}
+
+function viewEmployees() {
+  const employeeRequest = "SELECT * FROM employees";
+}
 
 function addDepartment() {}
 
@@ -70,6 +85,5 @@ function addRole() {}
 function addEmployee() {}
 
 function updateEmployee() {}
-
 
 
