@@ -2,8 +2,7 @@ const inquirer = require('inquirer');
 const PORT = 3001;
 const mysql = require('mysql2');
 
-
-//Create connection to our mysql database
+// CREATE CONNECTION TO MYSQL DATABASE
 const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
@@ -17,7 +16,7 @@ connection.connect((err) => {
 
 });
 
-// Initial questions when app is started
+// INITIAL QUESTIONS WHEN APP IS STARTED
 function initQuestions() {
   inquirer.prompt({
     type: 'list',
@@ -34,6 +33,7 @@ function initQuestions() {
     ],
   })
     .then((answers) => {
+      // SWITCH STATEMENT TO HANDLE DIFFERENT USER CHOICES  
       switch (answers.selected_option) {
         case 'View all departments':
           viewDepartments();
@@ -63,28 +63,36 @@ function initQuestions() {
     })
 }
 
-
+// FUNCTION TO VIEW ALL DEPARTMENTS
 function viewDepartments() {
   connection.query('SELECT * FROM departments', (err, res) => {
     if (err) throw err
     console.table(res)
+    initQuestions();
+
   })
 }
 
+// FUNCTION TO VIEW ALL ROLES
 function viewRoles() {
   connection.query("SELECT * FROM roles", (err, res) => {
     if (err) throw err
     console.table(res)
+    initQuestions();
+
   });
 }
 
+// FUNCTION TO VIEW ALL EMPLOYEES
 function viewEmployees() {
   connection.query("SELECT * FROM employee", (err, res) => {
     if (err) throw err
     console.table(res)
+    initQuestions();
   });
 }
 
+// FUNCTION TO ADD A NEW DEPARTMENT
 function addDepartment() {
   inquirer
     .prompt({
@@ -95,10 +103,12 @@ function addDepartment() {
       connection.query('INSERT INTO departments SET ?', {department_name: answers.name}, (err, res) => {
         if (err) throw err
         console.table(res);
+        initQuestions();
       })
     })
 }
 
+// FUNCTION TO ADD A ROLE
 function addRole() { 
   inquirer
   .prompt({
@@ -113,40 +123,67 @@ function addRole() {
       (err, res) => {
         if(err) throw err 
         console.table(res);
+        initQuestions();
       })
   })
 }
 
+// FUNCTION TO ADD A NEW EMPLOYEE
 function addEmployee() {
   inquirer
-  .prompt({
-    type: "input",
-    name: "name",
-    message: "Enter the name of the new employee",
-  }).then((answers) => {
+  .prompt([
+    {
+      type: "input",
+      name: "firstName",
+      message: "Enter the first name of the new employee:",
+    },
+    {
+      type: "input",
+      name: "lastName",
+      message: "Enter the last name of the new employee:",
+    },
+  ]).then((answers) => {
     connection.query('INSERT INTO employee SET ?', [
-      {first_name: answers.name},
-      {last_name: answers.name},
+      {first_name: answers.firstName},
+      {last_name: answers.lastName},
       {role_id: answers.name}],
       (err, res) => {
         if(err) throw err
         console.table(res);
+        initQuestions();
       })
   })
  }
 
+ // FUNCTION TO UPDATE AN EMPLOYEES ROLE
 function updateEmployee() { 
   inquirer
-  .prompt({
-    type: 'input',
-    name: 'name',
-    message: 'update employee role',
-  }).then((answers) => {
-    connection.query('UPDATE employee SET ? WHERE ?', [
-      {}
-    ])
-  })
+  .prompt([
+    {
+      type: 'input',
+      name: 'employeeName',
+      message: 'Enter the name of the employee to update:',
+    },
+    {
+      type: 'input',
+      name: 'newRoleId',
+      message: 'Enter the new role ID for the employee:',
+    },
+  ])
+  .then((answers) => {
+    const { employeeName, newRoleId } = answers;
+
+    connection.query(
+      'UPDATE employee SET role_id = ? WHERE CONCAT(first_name, " ", last_name) = ?',
+      [newRoleId, employeeName],
+      (err, res) => {
+        if (err) throw err;
+        console.table('Employee role updated successfully!');
+        initQuestions();
+      }
+    );
+  });
 }
 
-
+// START THE APP
 initQuestions();
